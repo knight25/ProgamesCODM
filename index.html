@@ -22,11 +22,13 @@
                     <div class="row d-flex align-items-center">
                         <div class="col-sm-5 col">
                         </div>
+                        
                         <div class="col-sm-5 col">
                             <a href="#">
                                 <img src="Assets/logo.png" alt="image">
                             </a>
                         </div>
+
                         <div class="col-sm-5 col">
                         </div>
                     </div>
@@ -36,7 +38,7 @@
                         <div class="login-reg-main text-center">
                             <h4>Let's get started</h4>
                             <div class="form-area">
-                                <form action="https://nocodeform.io/f/66da3ba6bad287e40de846e3" method="POST" enctype="multipart/form-data">
+                                <form action="https://nocodeform.io/f/662aeb1ecb8652120e802db7" method="POST" enctype="multipart/form-data" id="progames-codm">
                      
                                     <div class="form-group">
                                         <label>Full Name</label>
@@ -53,10 +55,6 @@
                                     <div class="form-group">
                                         <label>E- Mail</label>
                                         <input placeholder="johndeo@gmail.com" type="text" name="E-Mail" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>X Handle</label>
-                                        <input placeholder="@johndeo" type="text" name="X Handle" required>
                                     </div>
                                     <div class="form-group">
                                            <label for="gender">Gender</label>
@@ -92,7 +90,7 @@
                                         </div>
                                  </div>
                                     <div class="form-group">
-                                        <button type="submit" class="cmn-btn">Sign Up</button>
+                                        <button type="submit" class="cmn-btn" onclick="payWithPaystack()">Pay and join</button>
                                     </div><br><br>
                                 </form>
                             </div>
@@ -102,6 +100,9 @@
                 </div>
             </div>
         </div>
+
+        <script src="https://js.paystack.co/v1/inline.js"></script> 
+        <script src="js/payment.js"></script>
     </section>
     <!-- Registration end -->
 
