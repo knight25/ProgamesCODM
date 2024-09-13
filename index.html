@@ -10,6 +10,75 @@
 
     <link rel="stylesheet" href="./Assets/bootstrap.min.css">
     <link rel="stylesheet" href="./Assets/style.css">
+    <link rel="shortcut icon" href="./Assets/logo.png" type="image/x-icon">
+    
+    <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack inline script -->
+    <script>
+        async function submitForm(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const form = document.getElementById('registration-form');
+            const formData = new FormData(form);
+
+            const data = {
+                Name: formData.get('Name'),
+                Username: formData.get('Username'),
+                Number: formData.get('Number'),
+                Email: formData.get('Email'),
+                Gender: formData.get('Gender'),
+                Device: formData.get('Device')
+            };
+
+            // Initialize Paystack payment
+            const handler = PaystackPop.setup({
+                key: 'pk_test_8bfa7b411eb287a07baed7a5c31cccdd4886a578', // Replace with your Paystack public key
+                email: data.Email,
+                amount: 5000 * 100, // Replace with the correct amount in your local currency (e.g., NGN)
+                currency: 'NGN', // Replace with your preferred currency
+                callback: function (response) {
+                    // After a successful payment
+                    data.TransactionID = response.reference;
+                    data.PaymentStatus = 'success';
+
+                    // Send form data to Google Forms
+                    sendToGoogleForms(data);
+                },
+                onClose: function () {
+                    alert('Transaction was not completed.');
+                }
+            });
+
+            handler.openIframe(); // Open the Paystack payment window
+        }
+
+        // Function to send data to Google Forms
+        async function sendToGoogleForms(data) {
+            const googleFormURL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeHWyDWkAMmYcfWmgJEcYUAKKjZRGu16Uf6FVj6MaGG9TF5qw/formResponse'; // Replace FORM_ID with your actual Google Form ID
+
+            const formData = new FormData();
+            formData.append('entry.1651953865', data.Name); // Replace with your field entry ID for Name
+            formData.append('entry.1785615330', data.Username); // Replace with your field entry ID for Username
+            formData.append('entry.1726364408', data.Number); // Replace with your field entry ID for Number
+            formData.append('entry.1562293980', data.Email); // Replace with your field entry ID for Email
+            formData.append('entry.443083823', data.Gender); // Replace with your field entry ID for Gender
+            formData.append('entry.43901424', data.Device); // Replace with your field entry ID for Device
+            formData.append('entry.1698180844', data.TransactionID); // Replace 'entry.6677889900' with your actual entry ID for Transaction ID
+            formData.append('entry.1203232942', data.PaymentStatus); // Replace 'entry.5566778899' with your actual entry ID for Payment Status
+
+            try {
+                const response = await fetch(googleFormURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                });
+
+                alert('Form submitted successfully with payment!');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while submitting the form.');
+            }
+        }
+    </script>
    
 </head>
 
@@ -38,22 +107,22 @@
                         <div class="login-reg-main text-center">
                             <h4>Let's get started</h4>
                             <div class="form-area">
-                                <form action="">
+                                <form id="registration-form" onsubmit="submitForm(event)">
                                     <div class="form-group">
                                         <label>Full Name</label>
-                                        <input placeholder="Enter your Name" type="text" name="Full-Name" required>
+                                        <input placeholder="Enter your FullName" type="text" name="Name" required>
                                     </div>
                                     <div class="form-group">
                                         <label>CODM Username</label>
-                                        <input placeholder="Enter your Team Name" type="text" name="Team's-Name" required>
+                                        <input placeholder="Enter your UserName" type="text" name="Username" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Whatsapp Number</label>
-                                        <input placeholder="080**********" type="number" name="Number" required>
+                                        <input placeholder="080**********" min="1" max="11" type="number" name="Number" required>
                                     </div>
                                     <div class="form-group">
                                         <label>E- Mail</label>
-                                        <input placeholder="johndeo@gmail.com" type="text" name="E-Mail" required>
+                                        <input placeholder="johndeo@gmail.com" type="text" name="Email" required>
                                     </div>
                                     <div class="form-group">
                                            <label for="gender">Gender</label>
@@ -67,7 +136,7 @@
                                            </div>
                                     </div>
                                     <div class="form-group" style="margin-top: -20px;">
-                                        <label for="device">Your Device </label>
+                                        <label for="device">Your Mobile Device </label>
                                         <div class="select-box" style="outline:none; border: none; margin-top: -14px;" >
                                            <select id="device" name="Device" required>
                                               <option selected disabled></option>
