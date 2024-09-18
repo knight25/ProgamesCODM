@@ -1,5 +1,5 @@
 // Set the date for the event (Year, Month (0-11), Day, Hour, Minute, Second)
-let eventDate = new Date("Sep 18, 2024 12:00:00").getTime();
+let eventDate = new Date("Sep 18, 2024 13:15:00").getTime();
 
 // Function to update the countdown every second
 let countdownTimer = setInterval(function() {
@@ -8,7 +8,7 @@ let countdownTimer = setInterval(function() {
 
     if (timeLeft <= 0) {
         clearInterval(countdownTimer);
-        document.getElementById('countdown').textContent = "REGISTRATION HAS ENDED";
+        document.getElementById('countdown').textContent = "REGISTRATION HAS ENDED { You can no longer register  }";
     } else {
         // Calculate days, hours, minutes, and seconds
         let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));

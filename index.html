@@ -110,7 +110,7 @@
                                 <form id="registration-form" onsubmit="submitForm(event)">
                                     <div class="form-group">
                                         <label>Full Name</label>
-                                        <input placeholder="Enter your FullName" type="text" name="Name" required>
+                                        <input placeholder="Enter your FullName" type="text" name="Name" required style="text-transform: uppercase;">
                                     </div>
                                     <div class="form-group">
                                         <label>CODM Username</label>
@@ -158,11 +158,19 @@
                                         </div>
                                  </div>
                                     <div class="form-group">
-                                        <!--<button type="submit" class="cmn-btn" onclick="payWithPaystack()">Pay and join</button>-->
+                                        <button type="submit" class="cmn-btn" onclick="payWithPaystack()">Pay and join</button>
+                                        <!-- Type in [disabled] when you don't want the button to be functional -->
                                     </div><br><br>
                                 </form>
                             </div>
+                            </div><br>  
+                        
+                        <div class="login-reg-main text-center">
+                            <div id="countdown" style="color: white">
+                                 <h4>&nbsp; 00d 00h 00m 00s</h4>
                             </div>
+                        </div>
+                        
                         </div>
                     </div>
                 </div>
@@ -170,6 +178,13 @@
     </section>
     <!-- Registration end -->
      <script src="countdown.js"></script>
+    <script>
+        function submitForm(event)() {
+            let nameInput = document.getElementById("name");
+            nameInput.value = nameInput.value.toUpperCase();
+        }
+    
+    </script>
 
   
 
