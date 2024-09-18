@@ -53,17 +53,17 @@
 
         // Function to send data to Google Forms
         async function sendToGoogleForms(data) {
-            const googleFormURL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeHWyDWkAMmYcfWmgJEcYUAKKjZRGu16Uf6FVj6MaGG9TF5qw/formResponse'; // Replace FORM_ID with your actual Google Form ID
+            const googleFormURL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSc4e16v-kXeINvkw3EIdlYtkYxIhlarvX6jKQxyU8QCWnlOfw/formResponse'; // Replace FORM_ID with your actual Google Form ID
 
             const formData = new FormData();
-            formData.append('entry.1651953865', data.Name); // Replace with your field entry ID for Name
-            formData.append('entry.1785615330', data.Username); // Replace with your field entry ID for Username
-            formData.append('entry.1726364408', data.Number); // Replace with your field entry ID for Number
-            formData.append('entry.1562293980', data.Email); // Replace with your field entry ID for Email
-            formData.append('entry.443083823', data.Gender); // Replace with your field entry ID for Gender
-            formData.append('entry.43901424', data.Device); // Replace with your field entry ID for Device
-            formData.append('entry.1698180844', data.TransactionID); // Replace 'entry.6677889900' with your actual entry ID for Transaction ID
-            formData.append('entry.1203232942', data.PaymentStatus); // Replace 'entry.5566778899' with your actual entry ID for Payment Status
+            formData.append('entry.1784806187', data.Name); // Replace with your field entry ID for Name
+            formData.append('entry.1553368485', data.Username); // Replace with your field entry ID for Username
+            formData.append('entry.318829460', data.Number); // Replace with your field entry ID for Number
+            formData.append('entry.866832824', data.Email); // Replace with your field entry ID for Email
+            formData.append('entry.2047399584', data.Gender); // Replace with your field entry ID for Gender
+            formData.append('entry.1955030181', data.Device); // Replace with your field entry ID for Device
+            formData.append('entry.38495882', data.TransactionID); // Replace 'entry.6677889900' with your actual entry ID for Transaction ID
+            formData.append('entry.722784749', data.PaymentStatus); // Replace 'entry.5566778899' with your actual entry ID for Payment Status
 
             try {
                 const response = await fetch(googleFormURL, {
