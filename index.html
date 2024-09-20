@@ -12,93 +12,159 @@
     <link rel="stylesheet" href="./Assets/style.css">
     <link rel="icon" href="./Assets/logo.png" type="image/x-icon">
     
+    <style>
+        /* Modal Background */
+.custom-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Black with opacity */
+    z-index: 1000; /* Ensure it's on top */
+}
+
+/* Modal Content */
+.custom-modal-content {
+    background-color: white;
+    margin: 15% auto; /* Centered */
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px; /* Max width for larger screens */
+    text-align: center;
+    position: relative;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Button in the modal */
+.modal-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-btn:hover {
+    background-color: #45a049;
+}
+
+    
+    </style>
+    
     <script src="https://js.paystack.co/v1/inline.js"></script> <!-- Paystack inline script -->
     <script>
         async function submitForm(event) {
-            event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); // Prevent the default form submission
 
-            const form = document.getElementById('registration-form');
-            const formData = new FormData(form);
+    const form = document.getElementById('registration-form');
+    const formData = new FormData(form);
 
-            const data = {
-                Name: formData.get('Name'),
-                Username: formData.get('Username'),
-                Number: formData.get('Number'),
-                Email: formData.get('Email'),
-                Gender: formData.get('Gender'),
-                Device: formData.get('Device')
-            };
+    const data = {
+        Name: formData.get('Name'),
+        Username: formData.get('Username'),
+        Number: formData.get('Number'),
+        Email: formData.get('Email'),
+        Gender: formData.get('Gender'),
+        Device: formData.get('Device')
+    };
 
-            // Initialize Paystack payment
-            const handler = PaystackPop.setup({
-                key: 'pk_test_8bfa7b411eb287a07baed7a5c31cccdd4886a578', // Replace with your Paystack public key
-                email: data.Email,
-                amount: 5000 * 100, // Replace with the correct amount in your local currency (e.g., NGN)
-                currency: 'NGN', // Replace with your preferred currency
-                callback: function (response) {
-                    // After a successful payment
-                    data.TransactionID = response.reference;
-                    data.PaymentStatus = 'success';
+    // Initialize Paystack payment
+    const handler = PaystackPop.setup({
+        key: 'pk_test_8bfa7b411eb287a07baed7a5c31cccdd4886a578', // Replace with your Paystack public key
+        email: data.Email,
+        amount: 5000 * 100, // Replace with the correct amount in your local currency (e.g., NGN)
+        currency: 'NGN', // Replace with your preferred currency
+        callback: function (response) {
+            // After a successful payment
+            data.TransactionID = response.reference;
+            data.PaymentStatus = 'success';
 
-                    // Send form data to Google Forms
-                    sendToGoogleForms(data);
-                },
-                onClose: function () {
-                    alert('Transaction was not completed.');
-                }
-            });
+            // Send form data to Google Forms
+            sendToGoogleForms(data);
 
-            handler.openIframe(); // Open the Paystack payment window
+            // Show custom modal after successful form submission
+            showModal();
+        },
+        onClose: function () {
+            alert('Transaction was not completed.');
         }
+    });
 
-       async function sendToGoogleForms(data) {
-    const googleFormURL1 = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSc4e16v-kXeINvkw3EIdlYtkYxIhlarvX6jKQxyU8QCWnlOfw/formResponse';
-    const googleFormURL2 = 'https://docs.google.com/forms/d/e/1FAIpQLScfJV_5U367Ua1tCou9c8s8Z4KPMySKj27tRJTf0ca0BTqeDQ/formResponse'; // Second Google Form URL
-
-    // Create FormData for the first form
-    const formData1 = new FormData();
-    formData1.append('entry.1784806187', data.Name); // Name
-    formData1.append('entry.1553368485', data.Username); // Username
-    formData1.append('entry.318829460', data.Number); // Number
-    formData1.append('entry.866832824', data.Email); // Email
-    formData1.append('entry.2047399584', data.Gender); // Gender
-    formData1.append('entry.1955030181', data.Device); // Device
-    formData1.append('entry.38495882', data.TransactionID); // Transaction ID
-    formData1.append('entry.722784749', data.PaymentStatus); // Payment Status
-
-    // Create FormData for the second form
-    const formData2 = new FormData();
-    formData2.append('entry.1922325064', data.Username); // Username for the second form (if needed)
-    // Add other necessary fields for the second form here
-    formData2.append('entry.XXXXXXXX', data.SomeField); // Replace 'XXXXXXXX' with the correct entry ID for additional fields
-
-    try {
-        // Submit to the first Google Form
-        await fetch(googleFormURL1, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: formData1
-        });
-
-        // Submit to the second Google Form
-        await fetch(googleFormURL2, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: formData2
-        });
-
-        alert('Registration Completed!');
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while submitting the forms.');
-    }
+    handler.openIframe(); // Open the Paystack payment window
 }
+
+           async function sendToGoogleForms(data) {
+               const googleFormURL1 = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSc4e16v-kXeINvkw3EIdlYtkYxIhlarvX6jKQxyU8QCWnlOfw/formResponse';
+               const googleFormURL2 = 'https://docs.google.com/forms/d/e/1FAIpQLScfJV_5U367Ua1tCou9c8s8Z4KPMySKj27tRJTf0ca0BTqeDQ/formResponse'; // Second Google Form URL
+
+               const formData1 = new FormData();
+               formData1.append('entry.1784806187', data.Name); 
+               formData1.append('entry.1553368485', data.Username); 
+               formData1.append('entry.318829460', data.Number); 
+               formData1.append('entry.866832824', data.Email); 
+               formData1.append('entry.2047399584', data.Gender); 
+               formData1.append('entry.1955030181', data.Device); 
+               formData1.append('entry.38495882', data.TransactionID); 
+               formData1.append('entry.722784749', data.PaymentStatus); 
+
+               const formData2 = new FormData();
+               formData2.append('entry.1922325064', data.Username); 
+               formData2.append('entry.XXXXXXXX', data.SomeField); 
+
+               try {
+                   await fetch(googleFormURL1, { method: 'POST', mode: 'no-cors', body: formData1 });
+                   await fetch(googleFormURL2, { method: 'POST', mode: 'no-cors', body: formData2 });
+
+               } catch (error) {
+                   console.error('Error:', error);
+               }
+           }
+
+        // Function to display the custom modal
+           function showModal() {
+               const modal = document.getElementById('custom-modal');
+               modal.style.display = 'block'; // Show the modal
+           }
+
+     // Function to close the modal
+           function closeModal() {
+               const modal = document.getElementById('custom-modal');
+               modal.style.display = 'none'; // Hide the modal
+           }
+
+      // Close the modal when the user clicks on the close button
+           document.querySelector('.close-btn').addEventListener('click', closeModal);
+
 
     </script>
    
 </head>
 
 <body>
+    <!-- Modal Structure -->
+     <div id="custom-modal" class="custom-modal">
+         <div class="custom-modal-content">
+             <span class="close-btn">&times;</span>
+             <h2 style="color: black">Registration Completed!</h2><br>
+             <p style="color: black">Thank you for registering. Your payment has been received successfully.</p><br>
+             <button class="modal-btn" onclick="closeModal()">OK</button>
+         </div>
+     </div>
+
     <!-- Registration start -->
     <section id="login-reg">
         <div class="overlay pb-120">
