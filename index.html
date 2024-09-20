@@ -53,7 +53,8 @@
 
         // Function to send data to Google Forms
         async function sendToGoogleForms(data) {
-            const googleFormURL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSc4e16v-kXeINvkw3EIdlYtkYxIhlarvX6jKQxyU8QCWnlOfw/formResponse'; // Replace FORM_ID with your actual Google Form ID
+            const googleFormURL = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSc4e16v-kXeINvkw3EIdlYtkYxIhlarvX6jKQxyU8QCWnlOfw/formResponse';
+            const googleFormURL2 = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLScfJV_5U367Ua1tCou9c8s8Z4KPMySKj27tRJTf0ca0BTqeDQ/formResponse'; // Second Google Form URL, replace with actual ID// Replace FORM_ID with your actual Google Form ID
 
             const formData = new FormData();
             formData.append('entry.1784806187', data.Name); // Replace with your field entry ID for Name
@@ -65,19 +66,32 @@
             formData.append('entry.38495882', data.TransactionID); // Replace 'entry.6677889900' with your actual entry ID for Transaction ID
             formData.append('entry.722784749', data.PaymentStatus); // Replace 'entry.5566778899' with your actual entry ID for Payment Status
 
-            try {
-                const response = await fetch(googleFormURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: formData
-                });
+             // Create FormData for the second form
+             const formData2 = new FormData();
+             formData2.append('entry.1922325064', data.Username); // Username for the second form (if needed)
+             // Map additional fields for the second form as necessary
 
-                alert('Form submitted successfully with payment!');
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while submitting the form.');
-            }
-        }
+             try {
+             // Submit to the first Google Form
+                 await fetch(googleFormURL1, {
+                     method: 'POST',
+                     mode: 'no-cors',
+                     body: formData1
+                 });
+
+                 // Submit to the second Google Form
+                 await fetch(googleFormURL2, {
+                     method: 'POST',
+                     mode: 'no-cors',
+                     body: formData2
+                 });
+
+                 alert('Form submitted successfully!');
+             } catch (error) {
+                 console.error('Error:', error);
+                 alert('An error occurred while submitting the forms.');
+             }
+         }
     </script>
    
 </head>
